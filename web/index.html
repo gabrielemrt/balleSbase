@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <title>BALLE SBASE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Sezione Video di Benvenuto -->
+    <section id="hero">
+        <video autoplay muted loop id="bg-video">
+            <source src="./video/ferragosto24.mp4" type="video/mp4">
+            Il tuo browser non supporta la riproduzione video.
+        </video>
+        <div class="overlay">
+            <img src="./img/balleSbase.png" alt="Logo" id="logo">
+        </div>
+    </section>
+
+    <!-- Rettangolo con Countdown-->
+    <section id="countdown-section">
+        <div class="countdown-container">
+            <h2>Prossimo evento: 23 Novembre 2024</h2>
+            <div id="countdown" class="countdown-modern">
+                <div class="countdown-item">
+                    <span id="days" class="number">00</span>
+                    <span class="label">Giorni</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="hours" class="number">00</span>
+                    <span class="label">Ore</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="minutes" class="number">00</span>
+                    <span class="label">Minuti</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="seconds" class="number">00</span>
+                    <span class="label">Secondi</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Sezione Descrizione e Immagine -->
+    <section id="description">
+        <div class="container">
+            <div class="text">
+                <h2>Descrizione</h2>
+                <p>
+                    <!-- Aggiungi qui la tua descrizione -->
+                    Preparatevi a tuffarvi in una giornata indimenticabile con “Balle Sbase”, l’evento più fresco dell’estate! Unitevi a noi nel cuore delle colline per una festa esclusiva in piscina, dove l’acqua cristallina e la vista mozzafiato fanno da cornice a un pomeriggio di divertimento assoluto. 
+                    Ballate al ritmo dei migliori DJ, godetevi snack gustosi e rinfrescatevi con i nostri cocktail estivi. Non perdete l’occasione di fare un splash in compagnia, divertimento e danza vi aspettano!
+                </p>
+            </div>
+            <div class="image">
+                <img src="./img/balleSbase_2.png" alt="Immagine Descrizione">
+            </div>
+        </div>
+    </section>
+
+    <!-- Sezione Prossimo Evento -->
+    <section id="event-section">
+        <h2>Prossimo Evento: 20 Novembre 2024</h2>
+        <p id="event-summary">
+            Unisciti a noi per una giornata indimenticabile, tra musica, divertimento e connessioni uniche. 
+            Vivi l’esperienza esclusiva di “Balle Sbase” in una location immersa nella natura.
+        </p>
+        
+        <!-- Pulsanti di azione -->
+        <div class="event-buttons">
+            <button class="event-btn" id="location-btn"><i class="fas fa-map-marker-alt"></i> Vedi il luogo</button>
+            <button class="event-btn" id="register-btn"><i class="fas fa-ticket-alt"></i> Iscriviti ora</button>
+            <button class="event-btn" id="details-btn"><i class="fas fa-info-circle"></i> Mostra dettagli</button>
+        </div>
+
+        <!-- Descrizione dettagliata nascosta -->
+        <p id="event-details" class="hidden">
+            Immergiti in un’atmosfera unica con DJ set dal vivo, cocktail freschi e panorami mozzafiato. 
+            Rilassati nelle aree lounge o scatena la tua energia sulla pista. Una giornata di gioia e sorprese ti aspetta!
+        </p>
+
+        <!-- Galleria immagini -->
+        <div class="event-gallery">
+            <img src="./img/photo1.png" alt="Evento 1">
+            <img src="./img/photo2.png" alt="Evento 2">
+            <img src="./img/photo3.png" alt="Evento 3">
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
