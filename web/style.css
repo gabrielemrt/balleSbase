@@ -297,6 +297,7 @@
     margin: 50px auto;
     max-width: 800px;
     position: relative;
+    overflow: hidden;
 }
 
 #event-section h2 {
@@ -378,10 +379,11 @@
     justify-content: center;
     gap: 20px;
     margin-top: 25px;
+    flex-wrap: wrap; /* Consente alle immagini di andare a capo solo su dispositivi piccoli */
 }
 
 .event-gallery img {
-    max-width: 30%;
+    max-width: 30%; /* Rende le immagini affiancate su schermi grandi */
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -394,9 +396,12 @@
 
 /* Stile Responsive */
 @media (max-width: 768px) {
+    .event-gallery {
+        flex-direction: column; /* Dispone le immagini verticalmente su dispositivi piccoli */
+    }
     .event-gallery img {
         max-width: 80%;
-        margin-bottom: 20px;
+        margin: 0 auto 20px; /* Centra le immagini e aggiunge spazio sotto di loro */
     }
     
     .event-buttons {
