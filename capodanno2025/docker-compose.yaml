@@ -4,7 +4,7 @@ services:
   web:
     image: nginx:alpine
     ports:
-      - "8080:80"
+      - "8085:80"
     volumes:
       - ./app:/usr/share/nginx/html:ro
     container_name: capodanno2025_web
