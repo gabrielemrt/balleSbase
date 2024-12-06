@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <title>Capodanno 2025</title>
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    </head>
+    
+<body>
+    <div class="hero">
+        <video autoplay muted loop class="background-video">
+            <source src="videos/ferragosto24.mp4" type="video/mp4">
+            Il tuo browser non supporta i video HTML5.
+        </video>
+        <div class="hero-content">
+            <h1 class="animated-title">Festa di Capodanno 2025</h1>
+            <p class="animated-subtitle">Un evento indimenticabile per celebrare insieme il nuovo anno!</p>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scrolla per scoprire</span>
+            <div class="arrow"></div>
+        </div>
+    </div>
+    <div class="details">
+        <div class="description-box">
+            <h2 class="section-title">Festa di Capodanno 2025</h2>
+            <p class="short-description">
+                Vivi un'esperienza unica per dare il benvenuto al nuovo anno: musica, spettacoli, cibo gourmet 
+                e tanta energia! Unisciti a noi per una serata indimenticabile in compagnia di amici e ospiti speciali.
+            </p>
+            <div class="description-gallery">
+                <img src="images/photo1.png" alt="Sala festa illuminata">
+                <img src="images/photo2.png" alt="Cocktail esclusivi">
+                <img src="images/photo3.png" alt="Pista da ballo">
+            </div>
+            <button class="expand-button" id="expand-details">Mostra Dettagli</button>
+            <div class="expanded-details" id="details-content">
+                <p><strong>Data:</strong> 31 dicembre 2024</p>
+                <p><strong>Orario:</strong> Inizio alle 20:00 e si prosegue fino all'alba.</p>
+                <p><strong>Luogo:</strong> <em>Club X</em>, Via Roma 1, Milano.</p>
+                <p>
+                    **Highlight della serata:**
+                    <ul>
+                        <li>Musica live con DJ internazionali e performance dal vivo.</li>
+                        <li>Cocktail bar con mixologist professionisti.</li>
+                        <li>Buffet esclusivo con specialità gourmet.</li>
+                        <li>Spettacolo pirotecnico per il brindisi di mezzanotte.</li>
+                    </ul>
+                </p>
+                <p>
+                    Vieni a festeggiare il Capodanno con stile: prepara il tuo outfit elegante e 
+                    prenota subito il tuo posto per partecipare all'evento più esclusivo dell'anno!
+                </p>
+            </div>
+        </div>
+    </div>    
+    <div class="form-section">
+        <h2 class="section-title">Iscriviti all'evento</h2>
+        <form id="signup-form">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="cognome">Cognome:</label>
+            <input type="text" id="cognome" name="cognome" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="cellulare">Cellulare:</label>
+            <input type="tel" id="cellulare" name="cellulare" required>
+
+            <label for="sesso">Sesso:</label>
+            <select id="sesso" name="sesso" required>
+                <option value="maschio">Maschio</option>
+                <option value="femmina">Femmina</option>
+                <option value="altro">Altro</option>
+            </select>
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd1r3tUSBtqOpgjbbTC60ZMXVnVbVasZjG1BaApHtpw0OvZeQ/viewform?embedded=true" width="640" height="1503" frameborder="0" marginheight="0" marginwidth="0">Caricamento…</iframe>
+
+            <label for="privacy">
+                <input type="checkbox" id="privacy" name="privacy" required>
+                Acconsento alla Privacy Policy
+            </label>
+
+            <p class="privacy-note">
+                I dati saranno utilizzati esclusivamente per organizzare l'evento. 
+                <a href="privacy_policy.html" target="_blank">Leggi la Privacy Policy</a>.
+            </p>
+
+            <button type="submit" class="animated-button">Invia</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
