@@ -86,6 +86,22 @@ body {
     }
 }
 
+/* Logo */
+.logo {
+    max-width: 700px; /* Limita la dimensione del logo */
+    height: auto; /* Mantieni le proporzioni */
+    margin-bottom: 20px; /* Spazio tra il logo e il titolo */
+    animation: fade-in 2s ease-in-out forwards; /* Animazione di apparizione */
+}
+
+/* Responsività per il logo */
+@media (max-width: 768px) {
+    .logo {
+        max-width: 120px; /* Riduce il logo su schermi piccoli */
+        margin-bottom: 15px;
+    }
+}
+
 
 /* Effetti animati */
 @keyframes slide-in {
@@ -234,6 +250,32 @@ body {
 @keyframes fade-in {
     0% { opacity: 0; transform: translateY(-10px); }
     100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Contenitore del modulo di Google */
+.google-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+}
+
+.google-form {
+    width: 100%; /* Occupare tutta la larghezza disponibile */
+    max-width: 640px; /* Imposta una larghezza massima */
+    height: 100%; /* Altezza automatica */
+    max-height: 1503px; /* Imposta l'altezza massima del form */
+    border: none;
+}
+
+/* Media Query per dispositivi mobili */
+@media (max-width: 768px) {
+    .google-form {
+        max-width: 90%; /* Adatta il form al 90% della larghezza del dispositivo */
+        height: auto; /* Altezza automatica per mantenere la proporzione */
+    }
 }
 
 
