@@ -7,4 +7,4 @@ services:
       - "8090:80"
     volumes:
       - ./app:/usr/share/nginx/html:ro
-    container_name: capodanno2025_web
+    container_name: capodanno25_web
