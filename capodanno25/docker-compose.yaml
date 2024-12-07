@@ -6,5 +6,5 @@ services:
     ports:
       - "8090:80"
     volumes:
-      - ./app:/usr/share/nginx/html:ro
+      - ./app:/usr/share/nginx/html
     container_name: capodanno25_web
