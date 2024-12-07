@@ -28,17 +28,22 @@ body {
 }
 
 .hero-content {
+    display: flex; /* Utilizza Flexbox */
+    flex-direction: column; /* Allinea gli elementi verticalmente */
+    justify-content: center; /* Centra verticalmente */
+    align-items: center; /* Centra orizzontalmente */
     position: relative;
     top: 50%;
     transform: translateY(-50%);
     z-index: 2;
+    text-align: center; /* Per eredità su eventuali elementi di testo */
 }
-
 .logo {
     max-width: 900px;
+    width: 80%; /* Adatta la larghezza */
     height: auto;
     margin-bottom: 20px;
-    animation: fade-in 2s ease-in-out forwards;
+    /*animation: fade-in 2s ease-in-out forwards;*/
 }
 
 .animated-title {
@@ -277,6 +282,11 @@ body {
 @media (max-width: 768px) {
     .hero-content h1 {
         font-size: 2.5em;
+    }
+
+    .logo {
+        max-width: 1000px; /* Riduce la dimensione del logo su schermi piccoli */
+        margin-bottom: 10px;
     }
 
     .event-buttons {
