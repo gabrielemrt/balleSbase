@@ -387,6 +387,13 @@ body {
 
 
 /* Privacy Policy */
+.privacy-title {
+    text-align: center;
+    font-size: 2.5em;
+    color: #ff007a;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
 .privacy-container {
     max-width: 800px;
     margin: 0 auto;
