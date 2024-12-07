@@ -5,7 +5,7 @@ services:
     image: nginx:latest
     container_name: html_server
     ports:
-      - "8080:80"
+      - "8090:80"
     volumes:
       - ./googled88fc27681dbbd9d.html:/usr/share/nginx/html/index.html:ro
     restart: always
