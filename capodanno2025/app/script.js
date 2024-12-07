@@ -41,20 +41,22 @@ gsap.fromTo(
 document.getElementById('details-btn').addEventListener('click', function () {
     const eventDetails = document.getElementById('details-content');
     if (eventDetails.classList.contains('hidden')) {
-        eventDetails.classList.remove('hidden');
+        eventDetails.classList.remove('hidden'); // Mostra i dettagli
         this.textContent = 'Nascondi dettagli';
     } else {
-        eventDetails.classList.add('hidden');
+        eventDetails.classList.add('hidden'); // Nasconde i dettagli
         this.textContent = 'Mostra dettagli';
     }
 });
 
+
 // Pulsante "Vedi il luogo"
 document.getElementById('location-btn').addEventListener('click', function () {
-    alert("La mappa del luogo sarà disponibile presto.");
+    window.location.href = 'https://maps.app.goo.gl/xs178HzJaQ5HbLrb8'; // Reindirizzamento al link specificato
 });
 
 // Pulsante "Iscriviti ora"
 document.getElementById('register-btn').addEventListener('click', function () {
-    alert("La registrazione sarà disponibile a breve.");
+    window.location.href = 'https://forms.gle/GHjFbTCCp6t7D77z9'; // Reindirizzamento al link specificato
 });
+

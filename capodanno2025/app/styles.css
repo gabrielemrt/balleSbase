@@ -248,9 +248,12 @@ body {
     transform: translateY(-3px);
 }
 
+.hidden {
+    display: none; /* Nasconde l'elemento */
+}
+
 .expanded-details {
     margin-top: 20px;
-    display: none;
     font-size: 1em;
     color: #333;
     text-align: left;
