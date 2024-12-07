@@ -3,9 +3,9 @@ version: '3.8'
 services:
   web:
     image: nginx:latest
-    container_name: html_server
+    container_name: google_verification_server
     ports:
-      - "8090:80"
+      - "80:80"
     volumes:
-      - ./googled88fc27681dbbd9d.html:/usr/share/nginx/html/index.html:ro
+      - ./googled88fc27681dbbd9d.html:/usr/share/nginx/html/googled88fc27681dbbd9d.html:ro
     restart: always
