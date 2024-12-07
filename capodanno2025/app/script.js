@@ -1,4 +1,30 @@
-// Hero animations
+// Funzione per aggiornare il countdown
+function updateCountdown() {
+    const targetDate = new Date('January 1, 2025 00:00:00').getTime(); // Data di riferimento
+    const now = new Date().getTime(); // Data corrente
+    const timeLeft = targetDate - now; // Differenza tra le date
+
+    if (timeLeft >= 0) {
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        // Aggiorna il DOM con i valori
+        document.getElementById('days').textContent = days;
+        document.getElementById('hours').textContent = hours;
+        document.getElementById('minutes').textContent = minutes;
+        document.getElementById('seconds').textContent = seconds;
+    } else {
+        // Mostra un messaggio quando il countdown è terminato
+        document.getElementById('countdown').innerHTML = "<h3>Buon Anno Nuovo!</h3>";
+    }
+}
+
+// Aggiorna il countdown ogni secondo
+setInterval(updateCountdown, 1000);
+
+// Animazioni per la hero section (GSAP)
 gsap.fromTo(
     ".animated-title",
     { opacity: 0, y: 50 },
@@ -6,38 +32,29 @@ gsap.fromTo(
 );
 
 gsap.fromTo(
-    ".animated-subtitle",
-    { opacity: 0, y: 20 },
-    { opacity: 1, y: 0, duration: 1.5, delay: 1 }
+    ".logo",
+    { opacity: 0, scale: 0.5 },
+    { opacity: 1, scale: 1, duration: 1.5, delay: 0.3 }
 );
 
-// Toggle the expanded details
-document.getElementById("expand-details").addEventListener("click", function () {
-    const details = document.getElementById("details-content");
-    if (details.style.display === "none" || !details.style.display) {
-        details.style.display = "block";
-        this.textContent = "Nascondi Dettagli";
+// Mostra/nasconde i dettagli nella sezione "Eventi"
+document.getElementById('details-btn').addEventListener('click', function () {
+    const eventDetails = document.getElementById('details-content');
+    if (eventDetails.classList.contains('hidden')) {
+        eventDetails.classList.remove('hidden');
+        this.textContent = 'Nascondi dettagli';
     } else {
-        details.style.display = "none";
-        this.textContent = "Mostra Dettagli";
+        eventDetails.classList.add('hidden');
+        this.textContent = 'Mostra dettagli';
     }
 });
 
+// Pulsante "Vedi il luogo"
+document.getElementById('location-btn').addEventListener('click', function () {
+    alert("La mappa del luogo sarà disponibile presto.");
+});
 
-// Gallery animations on scroll
-const images = document.querySelectorAll(".image-wrapper");
-images.forEach((image, index) => {
-    gsap.fromTo(
-        image,
-        { opacity: 0, x: 100 * (index % 2 === 0 ? 1 : -1) },
-        {
-            opacity: 1,
-            x: 0,
-            duration: 1,
-            scrollTrigger: {
-                trigger: image,
-                start: "top 80%",
-            },
-        }
-    );
+// Pulsante "Iscriviti ora"
+document.getElementById('register-btn').addEventListener('click', function () {
+    alert("La registrazione sarà disponibile a breve.");
 });
