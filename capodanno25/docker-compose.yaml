@@ -2,9 +2,10 @@ version: '3.8'
 
 services:
   web:
-    image: nginx:alpine
+    image: nginx:latest
+    container_name: html_server
     ports:
-      - "8090:80"
+      - "8080:80"
     volumes:
-      - ./app:/usr/share/nginx/html
-    container_name: capodanno25_web
+      - ./googled88fc27681dbbd9d.html:/usr/share/nginx/html/index.html:ro
+    restart: always
