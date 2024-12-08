@@ -108,6 +108,11 @@ body {
     font-size: 2em;
     margin-bottom: 20px;
 }
+.countdown-container h3 {
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
 
 #countdown {
     display: flex;
@@ -161,6 +166,7 @@ body {
     font-size: 2.5em;
     font-weight: bold;
     margin-bottom: 15px;
+    text-align: center;
 }
 
 #event-summary {
@@ -313,11 +319,20 @@ body {
     }
 
     #countdown {
-        flex-direction: column;
-        gap: 15px;
+        flex-wrap: nowrap; /* Impedisce il ritorno a capo */
+        gap: 5px; /* Spaziatura ridotta tra i box */
     }
 
     .time-box {
-        width: 80px;
+        width: 60px; /* Riduce la dimensione dei box su dispositivi mobili */
+        padding: 10px;
+    }
+
+    .time-box span {
+        font-size: 1.2em; /* Riduce la dimensione dei numeri */
+    }
+
+    .time-box p {
+        font-size: 0.8em; /* Testo più compatto */
     }
 }
