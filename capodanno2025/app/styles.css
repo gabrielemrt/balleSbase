@@ -40,7 +40,7 @@ body {
 }
 
 .logo {
-    max-width: 900px;
+    max-width: 100%; 
     height: auto;
     margin-bottom: 20px;
 }
@@ -69,7 +69,7 @@ body {
 
 .description-content {
     padding: 20px;
-    background: rgba(0, 0, 0, 0.7); /* Sfondo semi-trasparente per leggibilità */
+    background: rgba(0, 0, 0, 0.9); /* Sfondo semi-trasparente per leggibilità */
     border-radius: 10px;
     max-width: 800px;
     text-align: center;
@@ -92,7 +92,7 @@ body {
     background-color: #222; /* Sfondo leggermente più scuro */
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombra per evidenziare */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombra per evidenziare */
     color: #ffcc00; /* Testo in giallo */
 }
 
