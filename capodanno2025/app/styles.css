@@ -93,7 +93,7 @@ body {
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Ombra per evidenziare */
-    color: #ffcc00; /* Testo in giallo */
+    color: #e0c05e; /* Testo in giallo */
 }
 
 /* Countdown Section */
@@ -152,7 +152,7 @@ body {
 
 .details {
     position: relative;
-    background: linear-gradient(to right, #ff8800, #ffcc00); /* Sfondo arancione per il riquadro */
+    background: linear-gradient(to right, #e0c05e, #e0c05e); /* Sfondo arancione per il riquadro */
     color: white;
     padding: 30px;
     border-radius: 15px; /* Angoli arrotondati */
