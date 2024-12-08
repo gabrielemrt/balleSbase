@@ -3,18 +3,19 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Poppins', Arial, sans-serif;
-    background-color: black;
+    overflow-x: hidden;
     color: white;
-    overflow-x: hidden; /* Evita scrolling orizzontale */
 }
 
 /* Hero Section */
 .hero {
-    position: relative;
+    position: fixed; /* Video rimane fisso */
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100vh;
     overflow: hidden;
-    text-align: center;
-    perspective: 1000px;
+    z-index: -1; /* Video sotto il contenuto */
 }
 
 .background-video {
@@ -28,50 +29,71 @@ body {
 }
 
 .hero-content {
-    display: flex; /* Utilizza Flexbox */
-    flex-direction: column; /* Allinea gli elementi verticalmente */
-    justify-content: center; /* Centra verticalmente */
-    align-items: center; /* Centra orizzontalmente */
     position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-    text-align: center; /* Per eredità su eventuali elementi di testo */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 1;
 }
+
 .logo {
     max-width: 900px;
-    width: 80%; /* Adatta la larghezza */
     height: auto;
     margin-bottom: 20px;
-    /*animation: fade-in 2s ease-in-out forwards;*/
 }
 
 .animated-title {
     font-size: 3.5em;
     color: #ff007a;
     text-transform: uppercase;
-    animation: slide-in 2s cubic-bezier(0.5, 1, 0.5, 1) forwards;
+    animation: fade-in 2s ease-in-out forwards;
     opacity: 0;
 }
 
-@keyframes slide-in {
-    0% {
-        transform: translateY(100px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
+/* Overlay Descrizione */
+.overlay-description {
+    position: relative;
+    width: 100%;
+    min-height: 100vh; /* Stessa altezza del viewport */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: transparent; /* Video visibile */
+    z-index: 1;
+    margin-top: 100vh; /* Posiziona sotto la hero */
 }
 
-@keyframes fade-in {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+.description-content {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.7); /* Sfondo semi-trasparente per leggibilità */
+    border-radius: 10px;
+    max-width: 800px;
+    text-align: center;
+    color: white;
+}
+
+.description-content h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #ff007a; /* Colore accattivante per il titolo */
+}
+
+.description-content p {
+    font-size: 1.2em;
+    line-height: 1.8;
+    margin-bottom: 20px;
+}
+
+.description-content .pricing {
+    background-color: #222; /* Sfondo leggermente più scuro */
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombra per evidenziare */
+    color: #ffcc00; /* Testo in giallo */
 }
 
 /* Countdown Section */
@@ -116,17 +138,24 @@ body {
 
 /* Sezione Evento */
 #event-section {
-    display: flex;
-    flex-direction: column; /* Disposizione verticale */
-    align-items: center;
-    background: linear-gradient(to right, #ff8800, #ffcc00);
-    padding: 30px 20px;
-    color: #fff;
-    border-radius: 15px;
-    margin: 30px auto;
-    max-width: 800px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative; /* Per assicurare il controllo del contenitore */
+    background-color: black; /* Sfondo nero per la sezione */
+    color: white; /* Testo bianco per contrasto */
+    padding: 50px 0; /* Spaziatura sopra e sotto il contenitore */
+    z-index: 1; /* Sovrappone sopra al video */
 }
+
+.details {
+    position: relative;
+    background: linear-gradient(to right, #ff8800, #ffcc00); /* Sfondo arancione per il riquadro */
+    color: white;
+    padding: 30px;
+    border-radius: 15px; /* Angoli arrotondati */
+    max-width: 800px;
+    margin: 0 auto; /* Centrare il riquadro */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Ombra */
+}
+
 
 #event-title {
     font-size: 2.5em;
@@ -143,7 +172,7 @@ body {
 /* Pulsanti */
 .event-buttons {
     display: flex;
-    flex-wrap: wrap; /* Consente di andare a capo su dispositivi piccoli */
+    flex-wrap: wrap;
     gap: 15px;
     justify-content: center;
     margin-bottom: 20px;
@@ -173,6 +202,18 @@ body {
     transform: scale(1.05);
 }
 
+.hidden {
+    display: none; /* Nasconde l'elemento */
+}
+
+.expanded-details {
+    margin-top: 20px;
+    font-size: 1em;
+    color: #333;
+    animation: fade-in 0.5s ease-in-out;
+}
+
+
 /* Galleria */
 .event-gallery {
     display: flex;
@@ -192,121 +233,6 @@ body {
 .event-gallery img:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-/* Descrizione Evento */
-.description-box {
-    background: white;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    padding: 30px;
-    border-radius: 15px;
-    text-align: center;
-    max-width: 700px;
-    margin: 30px auto;
-    width: 100%;
-}
-
-.section-title {
-    font-size: 2em;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-.short-description {
-    font-size: 1.2em;
-    margin-bottom: 25px;
-    color: #555;
-}
-
-.description-gallery {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.description-gallery img {
-    width: 30%;
-    border-radius: 10px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-}
-
-.description-gallery img:hover {
-    transform: scale(1.1);
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.expand-button {
-    background-color: #ff007a;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    font-size: 1.2em;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-}
-
-.expand-button:hover {
-    background-color: #e60070;
-    transform: translateY(-3px);
-}
-
-.hidden {
-    display: none; /* Nasconde l'elemento */
-}
-
-.expanded-details {
-    margin-top: 20px;
-    font-size: 1em;
-    color: #333;
-    text-align: left;
-    animation: fade-in 0.5s ease-in-out;
-}
-
-.expanded-details ul {
-    margin: 10px 0;
-    padding-left: 20px;
-}
-
-.expanded-details li {
-    margin: 5px 0;
-}
-
-.expanded-details p {
-    margin: 10px 0;
-}
-
-/* Responsività */
-@media (max-width: 768px) {
-    .hero-content h1 {
-        font-size: 2.5em;
-    }
-
-    .logo {
-        max-width: 1000px; /* Riduce la dimensione del logo su schermi piccoli */
-        margin-bottom: 10px;
-    }
-
-    .event-buttons {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .event-gallery img {
-        max-width: 80%;
-        margin: 0 auto;
-    }
-
-    .description-gallery img {
-        width: 80%;
-        margin: 0 auto 15px;
-    }
-
-    .time-box {
-        width: 80px;
-    }
 }
 
 /* Footer */
@@ -374,58 +300,24 @@ body {
 
 /* Responsività */
 @media (max-width: 768px) {
-    .footer-content {
+    .hero-content h1 {
+        font-size: 2.5em;
+    }
+
+    .description-content h2 {
+        font-size: 2em;
+    }
+
+    .description-content p {
+        font-size: 1em;
+    }
+
+    #countdown {
         flex-direction: column;
         gap: 15px;
     }
 
-    .footer-links {
-        flex-direction: column;
-        gap: 10px;
+    .time-box {
+        width: 80px;
     }
-}
-
-
-/* Privacy Policy */
-.privacy-title {
-    text-align: center;
-    font-size: 2.5em;
-    color: #ff007a;
-    margin-bottom: 20px;
-    font-weight: bold;
-}
-.privacy-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    color: #333;
-    line-height: 1.6;
-}
-
-.privacy-container h1,
-.privacy-container h2 {
-    text-align: center;
-    color: #333;
-}
-
-.privacy-container h2 {
-    margin-top: 20px;
-    font-size: 1.5em;
-    color: #ff007a;
-}
-
-.privacy-container p {
-    margin-bottom: 15px;
-}
-
-.privacy-container ul {
-    margin-left: 20px;
-    list-style-type: disc;
-}
-
-.privacy-container li {
-    margin-bottom: 10px;
 }

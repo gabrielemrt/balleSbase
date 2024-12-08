@@ -7,7 +7,6 @@
         <link rel="stylesheet" href="styles.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
     </head>
     <body>
         <!-- Hero Section -->
@@ -21,6 +20,28 @@
                 <h1 class="animated-title">Capodanno 2025</h1>
             </div>
         </div>
+
+<!-- Overlay Descrizione -->
+<section class="overlay-description">
+    <div class="description-content">
+        <h2>Alcune info</h2>
+        <p>
+            🎉 Preparati a vivere una serata unica e indimenticabile! <br>
+            La festa si terrà a <strong>San Mauro di Saline</strong>, in un capannone (riscaldato).
+        </p>
+        <p>
+            L’evento inizierà alle <strong>21:00</strong>, dopo cena, e sarà animato da un DJ che ci accompagnerà con musica dal vivo per tutta la serata. A disposizione ci saranno <strong>drink e stuzzichini</strong> per far emamare allegria ad ogniuno. 🍹🍴
+        </p>
+        <p>
+            Per chi desidera fermarsi a dormire, è possibile farlo portando con sé <strong>sacco a pelo e/o materassino</strong>.
+        </p>
+        <p class="pricing">
+            🎟 <strong>Costo:</strong> <br>
+            - <strong>20€</strong> con prenotazione anticipata. <br>
+            - <strong>25€</strong> direttamente la sera dell’evento.
+        </p>
+    </div>
+</section>
 
         <!-- Countdown Section -->
         <div class="countdown-container">
@@ -46,75 +67,42 @@
             <h2>Al grande appuntamento!</h2>
         </div>
 
-        <!-- Event Section -->
-        <div id="event-section" class="details">
-            <h2 id="event-title">CAPODANNO 2025</h2>
-            <p id="event-summary">
-                Unisciti a noi per una giornata indimenticabile, tra musica, divertimento e connessioni uniche.
-                Vivi l’esperienza esclusiva di “Balle Sbase” in una location immersa nella natura.
-            </p>
-            <div class="event-buttons">
-                <button class="event-btn" id="location-btn">
-                    <i class="fas fa-map-marker-alt"></i> Vedi il luogo
-                </button>
-                <button class="event-btn" id="register-btn">
-                    <i class="fas fa-ticket-alt"></i> Iscriviti ora
-                </button>
-                <button class="event-btn" id="details-btn">
-                    <i class="fas fa-info-circle"></i> Mostra dettagli
-                </button>
-                
-                <!-- Sezione nascosta -->
-                <div class="expanded-details hidden" id="details-content">
-                    <p><strong>Data:</strong> 31 dicembre 2024</p>
-                    <p><strong>Orario:</strong> Inizio alle 20:00 e si prosegue fino all'alba.</p>
-                    <p><strong>Luogo:</strong> <em>L'INDIRIZZO VERRA' COMUNICATO IN UN SECONDO MOMENTO</em>,</p>
-                    <ul>
-                        <li>Musica live con DJ internazionali e performance dal vivo.</li>
-                        <li>Cocktail bar con mixologist professionisti.</li>
-                        <li>Buffet esclusivo con specialità gourmet.</li>
-                        <li>Per chi ha la necessità si può dormire in loco.</li>
-                    </ul>
-                </div>                
-            </div>
-            <div class="event-gallery">
-                <img src="images/photo1.png" alt="Evento 1">
-                <img src="images/photo2.png" alt="Evento 2">
-                <img src="images/photo3.png" alt="Evento 3">
-            </div>
+       <!-- Event Section -->
+<div id="event-section">
+    <div class="details">
+        <h2 id="event-title">CAPODANNO 2025</h2>
+        <p id="event-summary">
+            I posti sono limitati! 
+            Iscriviti subito per garantirti un posto in lista. Al raggiungimento della soglia massima, 
+            le iscrizioni saranno chiuse.
+        </p>
+        <div class="event-buttons">
+            <button class="event-btn" id="location-btn">
+                <i class="fas fa-map-marker-alt"></i> Vedi il luogo
+            </button>
+            <button class="event-btn" id="register-btn">
+                <i class="fas fa-ticket-alt"></i> Iscriviti ora
+            </button>
+            <button class="event-btn" id="details-btn">
+                <i class="fas fa-info-circle"></i> Mostra dettagli
+            </button>
         </div>
+        <div class="expanded-details hidden" id="details-content">
+            <p><strong>Data:</strong> 31 dicembre 2024</p>
+            <p><strong>Orario:</strong> Inizio alle 21:00 e si prosegue fino alle 02:00.</p>
+            <p><strong>Luogo:</strong> <em>San Mauro di Saline</em>, Verona</p>
+            <ul>
+                <li>Musica live con DJ internazionali e performance dal vivo.</li>
+                <li>Cocktail bar con mixologist professionisti.</li>
+                <li>Buffet esclusivo con specialità gourmet.</li>
+                <li>Possibilità di pernottamento in loco.</li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-        <!-- Event Description Section -->
-        <!--<div class="details">
-            <div class="description-box">
-                <h2 class="section-title">Festa di Capodanno 2025</h2>
-                <p class="short-description">
-                    Vivi un'esperienza unica per dare il benvenuto al nuovo anno: musica, spettacoli, cibo gourmet 
-                    e tanta energia! Unisciti a noi per una serata indimenticabile in compagnia di amici e ospiti speciali.
-                </p>
-                <div class="description-gallery">
-                    <img src="images/photo1.png" alt="Sala festa illuminata">
-                    <img src="images/photo2.png" alt="Cocktail esclusivi">
-                    <img src="images/photo3.png" alt="Pista da ballo">
-                </div>
-                <button class="expand-button" id="expand-details">Mostra Dettagli</button>
-                <div class="expanded-details hidden" id="details-content">
-                    <p><strong>Data:</strong> 31 dicembre 2024</p>
-                    <p><strong>Orario:</strong> Inizio alle 20:00 e si prosegue fino all'alba.</p>
-                    <p><strong>Luogo:</strong> <em>Club X</em>, Via Roma 1, Milano.</p>
-                    <ul>
-                        <li>Musica live con DJ internazionali e performance dal vivo.</li>
-                        <li>Cocktail bar con mixologist professionisti.</li>
-                        <li>Buffet esclusivo con specialità gourmet.</li>
-                        <li>Spettacolo pirotecnico per il brindisi di mezzanotte.</li>
-                    </ul>
-                    <p>
-                        Vieni a festeggiare il Capodanno con stile: prepara il tuo outfit elegante e 
-                        prenota subito il tuo posto per partecipare all'evento più esclusivo dell'anno!
-                    </p>
-                </div>
-            </div>
-        </div> -->
+
+        <!-- Footer -->
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-logo">
@@ -123,7 +111,7 @@
                 <div class="footer-links">
                     <a href="#countdown">Countdown</a>
                     <a href="#event-section">Evento</a>
-                    <a href=https://capodanno2025.mrt3.it/privacy_policy.html>Privacy Policy</a>
+                    <a href="https://capodanno2025.mrt3.it/privacy_policy.html">Privacy Policy</a>
                 </div>
                 <div class="footer-socials">
                     <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>

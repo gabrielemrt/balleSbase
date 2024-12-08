@@ -24,39 +24,45 @@ function updateCountdown() {
 // Aggiorna il countdown ogni secondo
 setInterval(updateCountdown, 1000);
 
-// Animazioni per la hero section (GSAP)
+// GSAP Animazioni
 gsap.fromTo(
     ".animated-title",
     { opacity: 0, y: 50 },
     { opacity: 1, y: 0, duration: 1.5, delay: 0.5 }
 );
 
-gsap.fromTo(
-    ".logo",
-    { opacity: 0, scale: 0.5 },
-    { opacity: 1, scale: 1, duration: 1.5, delay: 0.3 }
-);
-
 // Mostra/nasconde i dettagli nella sezione "Eventi"
 document.getElementById('details-btn').addEventListener('click', function () {
     const eventDetails = document.getElementById('details-content');
-    if (eventDetails.classList.contains('hidden')) {
-        eventDetails.classList.remove('hidden'); // Mostra i dettagli
-        this.textContent = 'Nascondi dettagli';
+    if (eventDetails) {
+        if (eventDetails.classList.contains('hidden')) {
+            eventDetails.classList.remove('hidden'); // Mostra i dettagli
+            this.textContent = 'Nascondi dettagli';
+        } else {
+            eventDetails.classList.add('hidden'); // Nasconde i dettagli
+            this.textContent = 'Mostra dettagli';
+        }
     } else {
-        eventDetails.classList.add('hidden'); // Nasconde i dettagli
-        this.textContent = 'Mostra dettagli';
+        console.error("Elemento con ID 'details-content' non trovato.");
     }
 });
 
-
 // Pulsante "Vedi il luogo"
 document.getElementById('location-btn').addEventListener('click', function () {
-    window.location.href = 'https://maps.app.goo.gl/xs178HzJaQ5HbLrb8'; // Reindirizzamento al link specificato
+    const url = 'https://maps.app.goo.gl/xs178HzJaQ5HbLrb8'; // Reindirizzamento al link specificato
+    if (url) {
+        window.location.href = url;
+    } else {
+        console.error("URL per 'Vedi il luogo' non definito.");
+    }
 });
 
 // Pulsante "Iscriviti ora"
 document.getElementById('register-btn').addEventListener('click', function () {
-    window.location.href = 'https://forms.gle/GHjFbTCCp6t7D77z9'; // Reindirizzamento al link specificato
+    const url = 'https://forms.gle/GHjFbTCCp6t7D77z9'; // Reindirizzamento al link specificato
+    if (url) {
+        window.location.href = url;
+    } else {
+        console.error("URL per 'Iscriviti ora' non definito.");
+    }
 });
-
