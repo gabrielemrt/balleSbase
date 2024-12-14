@@ -6,6 +6,9 @@ WORKDIR /app
 COPY main.py /app/main.py
 
 # Installa le dipendenze necessarie
-RUN apt-get update && apt-get install -y feh omxplayer && apt-get clean
+RUN apt-get update && apt-get install -y feh mpv && apt-get clean
+
+# Installa Flask
+RUN pip install flask
 
 CMD ["python3", "main.py"]

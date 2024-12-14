@@ -19,7 +19,8 @@ def display_file(file_path):
     if file_path.suffix in [".jpg", ".jpeg", ".png"]:
         os.system(f"feh --fullscreen --auto-zoom {file_path}")
     elif file_path.suffix in [".mp4", ".avi"]:
-        os.system(f"omxplayer --loop {file_path}")
+        os.system(f"mpv --fs --loop {file_path}")
+
 
 def display_logo():
     """Mostra il logo predefinito."""
