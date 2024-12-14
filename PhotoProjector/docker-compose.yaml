@@ -14,8 +14,8 @@ services:
       tail -f /dev/null
       "
     environment:
-      - SMB_USERNAME=AAAA
-      - SMB_PASSWORD=AAAA
+      - SMB_USERNAME=raspy
+      - SMB_PASSWORD=Temp1234!
       - NAS_HOST=192.168.100.23
       - NAS_SHARE="/home/Photos/PhotoRequest/CAPODANNO 2025/"
     privileged: true
