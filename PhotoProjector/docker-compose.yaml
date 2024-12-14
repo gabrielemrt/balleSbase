@@ -30,15 +30,12 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: photo_display_service
-    depends_on:
-      - smb_client
     volumes:
       - nas_volume:/mnt/nas_photos:ro
-    entrypoint: >
-      sh -c "
-      ./wait-for-smb.sh &&
-      python3 main.py
-      "
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - smb_client
     ports:
       - "8091:8091"  # Esponi il servizio Python sulla porta 8091
     deploy:
@@ -46,6 +43,8 @@ services:
         limits:
           cpus: '0.5'
           memory: 256M
+    restart: always  # Riavvia automaticamente in caso di errore
+
 
 volumes:
   nas_volume:
