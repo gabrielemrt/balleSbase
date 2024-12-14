@@ -17,9 +17,12 @@ def get_files(folder):
 def display_file(file_path):
     """Mostra un file immagine o video sullo schermo."""
     if file_path.suffix in [".jpg", ".jpeg", ".png"]:
-        os.system(f"feh --fullscreen --auto-zoom {file_path}")
+        os.system(f"feh --bg-center '{file_path}'")  # Cambia sfondo senza aprire il display
     elif file_path.suffix in [".mp4", ".avi"]:
-        os.system(f"mpv --fs --loop {file_path}")  # Usando mpv al posto di omxplayer
+        os.system(f"mpv --fs --loop '{file_path}'")
+    else:
+        print(f"File type not supported: {file_path}")
+
 
 def display_logo():
     """Mostra il logo predefinito."""
