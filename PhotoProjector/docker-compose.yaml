@@ -10,7 +10,7 @@ services:
       sh -c "
       apt-get update &&
       apt-get install -y cifs-utils &&
-      mount -t cifs -o username=${SMB_USERNAME},password=${SMB_PASSWORD} //${NAS_HOST}/${NAS_SHARE} /mnt/nas_photos &&
+      mount -t cifs //${NAS_HOST}/${NAS_SHARE} /mnt/nas_photos -o username=${SMB_USERNAME},password=${SMB_PASSWORD},rw,vers=3.0 &&
       tail -f /dev/null
       "
     environment:
