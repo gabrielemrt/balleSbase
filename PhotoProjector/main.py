@@ -19,12 +19,15 @@ def display_file(file_path):
     if file_path.suffix in [".jpg", ".jpeg", ".png"]:
         os.system(f"feh --fullscreen --auto-zoom {file_path}")
     elif file_path.suffix in [".mp4", ".avi"]:
-        os.system(f"mpv --fs --loop {file_path}")
-
+        os.system(f"mpv --fs --loop {file_path}")  # Usando mpv al posto di omxplayer
 
 def display_logo():
     """Mostra il logo predefinito."""
     os.system(f"feh --fullscreen --auto-zoom {LOGO_FILE}")
+
+@app.route("/")
+def index():
+    return "Welcome to the Photo Display Service! Use /display to show photos.", 200
 
 @app.route("/display")
 def display_photos():
