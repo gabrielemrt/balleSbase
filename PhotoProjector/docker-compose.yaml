@@ -46,7 +46,7 @@ services:
     command: >
       sh -c "
       echo 'Delaying start of photo_display_service...' &&
-      sleep 15 &&
+      sleep 60 &&
       python3 main.py
       "
 
