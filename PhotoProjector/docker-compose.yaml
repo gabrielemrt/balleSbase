@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  smb_client:
+    image: ubuntu:22.04
+    container_name: smb_client
+    volumes:
+      - nas_volume:/mnt/nas_photos
+    entrypoint: >
+      sh -c "
+      apt-get update &&
+      apt-get install -y cifs-utils &&
+      mount -t cifs -o username=${SMB_USERNAME},password=${SMB_PASSWORD} //${NAS_HOST}/${NAS_SHARE} /mnt/nas_photos &&
+      tail -f /dev/null
+      "
+    environment:
+      - SMB_USERNAME=AAAA
+      - SMB_PASSWORD=AAAA
+      - NAS_HOST=192.168.100.23
+      - NAS_SHARE="/home/Photos/PhotoRequest/CAPODANNO 2025/"
+    privileged: true
+
+  photo_display:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: photo_display_service
+    volumes:
+      - nas_volume:/mnt/nas_photos:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - smb_client
+    ports:
+      - "8091:8091"  # Esponi il servizio Python sulla porta 8091
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+volumes:
+  nas_volume:
+    driver: local
