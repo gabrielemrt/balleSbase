@@ -43,7 +43,12 @@ services:
         limits:
           cpus: '0.5'
           memory: 256M
-    restart: always  # Riavvia automaticamente in caso di errore
+    command: >
+      sh -c "
+      echo 'Delaying start of photo_display_service...' &&
+      sleep 15 &&
+      python3 main.py
+      "
 
 
 volumes:
