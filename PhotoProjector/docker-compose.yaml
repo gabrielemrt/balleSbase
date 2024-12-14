@@ -30,6 +30,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: photo_display_service
+    depends_on:
+      - smb_client
     volumes:
       - nas_volume:/mnt/nas_photos:ro
     environment:
