@@ -34,10 +34,11 @@ services:
       - smb_client
     volumes:
       - nas_volume:/mnt/nas_photos:ro
-    environment:
-      - PYTHONUNBUFFERED=1
-    depends_on:
-      - smb_client
+    entrypoint: >
+      sh -c "
+      ./wait-for-smb.sh &&
+      python3 main.py
+      "
     ports:
       - "8091:8091"  # Esponi il servizio Python sulla porta 8091
     deploy:
