@@ -1,6 +1,7 @@
 from flask import Flask, send_file, Response
 import os
 import time
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
@@ -12,6 +13,9 @@ AUTO_REFRESH_INTERVAL = 5   # secondi tra un refresh della pagina e l'altro
 
 IMAGE_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.gif')
 VIDEO_EXTENSIONS = ('.mp4', '.mov', '.webm')  # Aggiungi altri formati se necessario
+
+# Imposta l'orario bersaglio, ad esempio Capodanno 2025
+TARGET_TIME = datetime(2024, 12, 15, 14, 0, 0)
 
 known_files = set()  # per tracciare i file già visti
 media_queue = []      # coda di file (tuple (filename, mtime))
@@ -27,12 +31,11 @@ def is_image(filename):
 def update_media_list():
     global known_files, media_queue
 
-    # Aggiorna la lista dei file nella cartella
     all_files = [f for f in os.listdir(PHOTOS_DIR) if f.lower().endswith(IMAGE_EXTENSIONS + VIDEO_EXTENSIONS)]
     # Ordina per data di modifica, dal più vecchio al più recente
     all_files.sort(key=lambda x: os.path.getmtime(os.path.join(PHOTOS_DIR, x)), reverse=False)
 
-    # Controlla i nuovi file non ancora noti e aggiungili in coda
+    # Aggiunge in coda i nuovi file
     for f in all_files:
         if f not in known_files:
             file_mtime = os.path.getmtime(os.path.join(PHOTOS_DIR, f))
@@ -40,10 +43,6 @@ def update_media_list():
             known_files.add(f)
 
 def get_current_media():
-    """Gestisce la logica di quale file mostrare:
-       - Se il current_media è scaduto, passa al successivo in coda.
-       - Se non ci sono media in coda e current_media è scaduto, mostra il logo.
-    """
     global current_media, current_media_start, media_queue
 
     now = time.time()
@@ -62,10 +61,20 @@ def get_current_media():
 
 @app.route('/')
 def show_media():
-    # Aggiorniamo la lista dei media disponibili
-    update_media_list()
+    # Calcola i tempi
+    now = datetime.now()
+    time_to_target = (TARGET_TIME - now).total_seconds()
 
-    # Determiniamo il media da mostrare
+    # Se manca meno di un minuto al TARGET_TIME, mostra il countdown
+    if 0 < time_to_target <= 60:
+        return show_countdown(time_to_target)
+
+    # Se il tempo è passato (dopo il target time), mostra il logo o altro
+    if time_to_target <= 0:
+        return show_after_countdown()
+
+    # Altrimenti continua con la logica immagini/video
+    update_media_list()
     media = get_current_media()
 
     if media is not None:
@@ -107,9 +116,102 @@ def show_media():
       </body>
     </html>
     '''
-
     return Response(html_content, mimetype='text/html')
 
+def show_countdown(time_to_target):
+    # time_to_target sono i secondi rimanenti
+    # Passiamo il TARGET_TIME come millisecondi UNIX (epoch)
+    # e utilizziamo JavaScript per il countdown
+    target_ts = int(TARGET_TIME.timestamp() * 1000)  # in millisecondi
+
+    html_content = f'''
+    <html>
+      <head>
+        <title>Countdown</title>
+        <meta http-equiv="refresh" content="{AUTO_REFRESH_INTERVAL}">
+        <style>
+          body {{
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            font-family: sans-serif;
+            font-size: 5em;
+          }}
+          #countdown {{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }}
+        </style>
+      </head>
+      <body>
+        <div id="countdown">...loading</div>
+        <script>
+          var targetTime = {target_ts}; // millisecondi
+          function updateCountdown() {{
+            var now = new Date().getTime();
+            var distance = targetTime - now;
+
+            if (distance <= 0) {{
+              // Scaduto il tempo, ricarica per mostrare altro
+              window.location.reload();
+              return;
+            }}
+
+            var seconds = Math.floor(distance / 1000);
+            document.getElementById("countdown").innerText = seconds + "s";
+          }}
+
+          updateCountdown();
+          setInterval(updateCountdown, 1000);
+        </script>
+      </body>
+    </html>
+    '''
+    return Response(html_content, mimetype='text/html')
+
+def show_after_countdown():
+    # Dopo il target time, mostra per esempio il logo
+    # oppure potresti fare altro (un messaggio di auguri, un video speciale, ecc.)
+    html_content = f'''
+    <html>
+      <head>
+        <title>Happy New Year!</title>
+        <style>
+          body {{
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            font-family: sans-serif;
+            font-size: 3em;
+          }}
+          img {{
+            max-width: 100%;
+            max-height: 100%;
+          }}
+        </style>
+      </head>
+      <body>
+        <div>Happy New Year!</div>
+        <img src="/logo" alt="Logo After Countdown">
+      </body>
+    </html>
+    '''
+    return Response(html_content, mimetype='text/html')
 
 @app.route('/current_media')
 def current_media_file():
@@ -118,6 +220,10 @@ def current_media_file():
         return send_file(os.path.join(PHOTOS_DIR, current_media))
     else:
         return send_file(LOGO_FILE)
+
+@app.route('/logo')
+def serve_logo():
+    return send_file(LOGO_FILE)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8091)
