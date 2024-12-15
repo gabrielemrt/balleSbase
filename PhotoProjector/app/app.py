@@ -14,7 +14,7 @@ AUTO_REFRESH_INTERVAL = 5   # secondi tra un refresh della pagina e l'altro se N
 IMAGE_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.gif')
 VIDEO_EXTENSIONS = ('.mp4', '.mov', '.webm')  # Aggiungi altri formati se necessario
 
-TARGET_TIME = datetime(2024, 12, 15, 16, 35, 0) # esempio: 15 dicembre 2024 alle 15:00
+TARGET_TIME = datetime(2024, 12, 15, 16, 50, 0)
 COUNTDOWN_THRESHOLD = 60  # 60 secondi prima dell'evento
 
 known_files = set()  # Per tracciare i file già visti
