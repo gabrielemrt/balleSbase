@@ -6,8 +6,12 @@ services:
     container_name: photo_viewer
     volumes:
       - photos:/mnt/photos:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
     ports:
       - "8091:8091"
+    environment:
+  - TZ=Europe/Rome    
 
 volumes:
   photos:
