@@ -1,7 +1,7 @@
 from flask import Flask, send_file, Response
 import os
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -9,12 +9,12 @@ PHOTOS_DIR = "/mnt/photos"
 LOGO_FILE = "logo.png"
 CACHE_REFRESH = 5           # secondi tra aggiornamenti della lista file
 DISPLAY_DURATION = 15       # secondi di visualizzazione per ogni media
-AUTO_REFRESH_INTERVAL = 5   # secondi tra un refresh della pagina e l'altro
+AUTO_REFRESH_INTERVAL = 5   # secondi tra un refresh della pagina e l'altro se NON siamo in countdown
 
 IMAGE_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.gif')
 VIDEO_EXTENSIONS = ('.mp4', '.mov', '.webm')  # Aggiungi altri formati se necessario
 
-TARGET_TIME = datetime(2024, 12, 15, 16, 30, 0)  # 15 dicembre 2024 alle 15:00
+TARGET_TIME = datetime(2024, 12, 15, 16, 35, 0) # esempio: 15 dicembre 2024 alle 15:00
 COUNTDOWN_THRESHOLD = 60  # 60 secondi prima dell'evento
 
 known_files = set()  # Per tracciare i file già visti
@@ -64,6 +64,17 @@ def show_media():
     # Calcola quanti secondi mancano al TARGET_TIME
     seconds_to_target = (TARGET_TIME - now).total_seconds()
 
+    # Determiniamo l'intervallo di refresh in base allo stato
+    if seconds_to_target > COUNTDOWN_THRESHOLD:
+        # Prima dell'ultimo minuto: refresh standard
+        refresh_interval = AUTO_REFRESH_INTERVAL
+    elif 0 <= seconds_to_target <= COUNTDOWN_THRESHOLD:
+        # Durante il countdown: refresh ogni secondo
+        refresh_interval = 1
+    else:
+        # Dopo il target: refresh standard (o potresti lasciarlo invariato)
+        refresh_interval = AUTO_REFRESH_INTERVAL
+
     if seconds_to_target > COUNTDOWN_THRESHOLD:
         # Siamo prima del minuto finale: mostra i media
         update_media_list()
@@ -79,17 +90,16 @@ def show_media():
             media_tag = f'<img src="/current_media" alt="Current Media">'
     elif 0 <= seconds_to_target <= COUNTDOWN_THRESHOLD:
         # Siamo nell'ultimo minuto: mostra il countdown
-        # Mostra quanti secondi mancano (arrotondando per difetto)
         sec_remaining = int(seconds_to_target)
-        media_tag = f'<h1 style="font-size:10vw; color: #fff;">{sec_remaining}</h1>'
+        media_tag = f'<h1 style="font-size:10vw; color:#fff;">{sec_remaining}</h1>'
     else:
-        # TARGET_TIME superato: mostra il logo o qualche altro contenuto speciale
+        # TARGET_TIME superato: mostra il logo o altro contenuto
         media_tag = f'<img src="/current_media" alt="Current Media">'
 
     html_content = f'''
     <html>
       <head>
-        <meta http-equiv="refresh" content="{AUTO_REFRESH_INTERVAL}">
+        <meta http-equiv="refresh" content="{refresh_interval}">
         <title>Photo/Video Projector Countdown</title>
         <style>
           body {{
@@ -128,7 +138,7 @@ def current_media_file():
     now = datetime.now()
     seconds_to_target = (TARGET_TIME - now).total_seconds()
 
-    # Se siamo nell'ultimo minuto o oltre, mostra il logo
+    # Se siamo nell'ultimo minuto o dopo, mostra il logo
     if seconds_to_target <= COUNTDOWN_THRESHOLD:
         return send_file(LOGO_FILE)
 
