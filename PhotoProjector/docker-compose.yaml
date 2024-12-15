@@ -1,57 +1,18 @@
 version: '3.8'
 
 services:
-  #smb_client:
-  #  image: ubuntu:22.04
-  #  container_name: smb_client
-  #  volumes:
-  #    - nas_volume:/mnt/nas_photos
-  #  entrypoint: >
-  #    sh -c "
-  #    apt-get update &&
-  #    apt-get install -y cifs-utils &&
-  #    mkdir -p /mnt/nas_photos &&
-  #    if mount -t cifs '//${NAS_HOST}/${NAS_SHARE}' /mnt/nas_photos -o username=${SMB_USERNAME},password=${SMB_PASSWORD},rw,vers=3.0; then
-  #      echo 'Mount succeeded';
-  #    else
-  #      echo 'Mount failed, check configuration';
-  #    fi &&
-  #    tail -f /dev/null
-  #    "
-  #  environment:
-  #    - SMB_USERNAME=${SMB_USERNAME}
-  #    - SMB_PASSWORD=${SMB_PASSWORD}
-  #    - NAS_HOST=${NAS_HOST}
-  #    - NAS_SHARE=${NAS_SHARE}
-  #  privileged: true
-
-  photo_display:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: photo_display_service
+  photo-viewer:
+    build: ./app
+    container_name: photo_viewer
     volumes:
-      #- nas_volume:/mnt/nas_photos:ro
-      - /mnt/nas_photos:/mnt/nas_photos:ro
-    environment:
-      - PYTHONUNBUFFERED=1
-    #depends_on:
-    #  - smb_client
+      - photos:/mnt/photos:ro
     ports:
-      - "8091:8091"  # Esponi il servizio Python sulla porta 8091
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 256M
-    #command: >
-    #  sh -c "
-    #  echo 'Delaying start of photo_display_service...' &&
-    #  sleep 60 &&
-    #  python3 main.py
-    #  "
-
+      - "8091:8091"
 
 volumes:
-  nas_volume:
+  photos:
     driver: local
+    driver_opts:
+      type: cifs
+      o: username='raspy',password='Temp1234!',vers=3.0
+      device: "//192.168.100.23/home/Photos/PhotoRequest/CAPODANNO 2025/"
