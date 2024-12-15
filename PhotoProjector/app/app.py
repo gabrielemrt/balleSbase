@@ -14,8 +14,8 @@ AUTO_REFRESH_INTERVAL = 5   # secondi tra un refresh della pagina e l'altro
 IMAGE_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.gif')
 VIDEO_EXTENSIONS = ('.mp4', '.mov', '.webm')  # Aggiungi altri formati se necessario
 
-# Imposta l'orario bersaglio, ad esempio Capodanno 2025
-TARGET_TIME = datetime(2024, 12, 15, 14, 0, 0)
+# Imposta l'orario bersaglio (15 dicembre 2024, 14:05)
+TARGET_TIME = datetime(2024, 12, 15, 14, 5, 0)
 
 known_files = set()  # per tracciare i file già visti
 media_queue = []      # coda di file (tuple (filename, mtime))
@@ -120,8 +120,6 @@ def show_media():
 
 def show_countdown(time_to_target):
     # time_to_target sono i secondi rimanenti
-    # Passiamo il TARGET_TIME come millisecondi UNIX (epoch)
-    # e utilizziamo JavaScript per il countdown
     target_ts = int(TARGET_TIME.timestamp() * 1000)  # in millisecondi
 
     html_content = f'''
@@ -178,12 +176,11 @@ def show_countdown(time_to_target):
     return Response(html_content, mimetype='text/html')
 
 def show_after_countdown():
-    # Dopo il target time, mostra per esempio il logo
-    # oppure potresti fare altro (un messaggio di auguri, un video speciale, ecc.)
+    # Dopo il target time, mostra il logo o qualcos'altro
     html_content = f'''
     <html>
       <head>
-        <title>Happy New Year!</title>
+        <title>Dopo il Countdown</title>
         <style>
           body {{
             background-color: #000;
@@ -206,7 +203,7 @@ def show_after_countdown():
         </style>
       </head>
       <body>
-        <div>Happy New Year!</div>
+        <div>Il tempo è scaduto!</div>
         <img src="/logo" alt="Logo After Countdown">
       </body>
     </html>
