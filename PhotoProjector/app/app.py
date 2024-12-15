@@ -2,6 +2,7 @@ from flask import Flask, send_file, Response
 import os
 import time
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 app = Flask(__name__)
 
@@ -14,8 +15,9 @@ AUTO_REFRESH_INTERVAL = 5   # secondi tra un refresh della pagina e l'altro
 IMAGE_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.gif')
 VIDEO_EXTENSIONS = ('.mp4', '.mov', '.webm')  # Aggiungi altri formati se necessario
 
-# Imposta l'orario bersaglio (15 dicembre 2024, 14:05)
-TARGET_TIME = datetime(2024, 12, 15, 14, 5, 0)
+TARGET_TIME = datetime(2024, 12, 15, 15, 0, 0, tzinfo=ZoneInfo("Europe/Rome"))
+now = datetime.now(tz=ZoneInfo("Europe/Rome"))
+
 
 known_files = set()  # per tracciare i file già visti
 media_queue = []      # coda di file (tuple (filename, mtime))
