@@ -14,5 +14,5 @@ volumes:
     driver: local
     driver_opts:
       type: cifs
-      o: username='raspy',password='Temp1234!',vers=3.0
+      o: username='raspy',password="Temp1234!",vers=3.0
       device: '//192.168.100.23/home/Photos/PhotoRequest/CAPODANNO 2025/'
