@@ -337,6 +337,53 @@ body {
     }
 }
 
+/* Popup Overlay */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Sfondo semi-trasparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Popup nascosto */
+.popup.hidden {
+    display: none;
+}
+
+/* Contenuto del Popup */
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    color: black;
+}
+
+/* Pulsante di chiusura */
+.close-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #ff007a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.close-btn:hover {
+    background-color: #e60070;
+}
+
+
 /* Privacy Policy */
 .privacy-title {
     text-align: center;

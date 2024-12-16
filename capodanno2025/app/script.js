@@ -58,11 +58,21 @@ document.getElementById('location-btn').addEventListener('click', function () {
 });
 
 // Pulsante "Iscriviti ora"
+//document.getElementById('register-btn').addEventListener('click', function () {
+//    const url = 'https://forms.gle/GHjFbTCCp6t7D77z9'; // Reindirizzamento al link specificato
+//    if (url) {
+//        window.location.href = url;
+//    } else {
+//        console.error("URL per 'Iscriviti ora' non definito.");
+//    }
+//});
+
+// Mostra il popup
 document.getElementById('register-btn').addEventListener('click', function () {
-    const url = 'https://forms.gle/GHjFbTCCp6t7D77z9'; // Reindirizzamento al link specificato
-    if (url) {
-        window.location.href = url;
-    } else {
-        console.error("URL per 'Iscriviti ora' non definito.");
-    }
+    document.getElementById('popup').classList.remove('hidden');
+});
+
+// Nascondi il popup
+document.getElementById('close-popup').addEventListener('click', function () {
+    document.getElementById('popup').classList.add('hidden');
 });
