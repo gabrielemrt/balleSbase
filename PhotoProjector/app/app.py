@@ -11,7 +11,7 @@ CACHE_REFRESH = 5           # secondi tra aggiornamenti della lista file
 DISPLAY_DURATION = 15       # secondi di visualizzazione per ogni media
 AUTO_REFRESH_INTERVAL = 5   # secondi tra un refresh della pagina e l'altro se NON siamo in countdown
 
-IMAGE_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.gif')
+IMAGE_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.gif', '.dng')
 VIDEO_EXTENSIONS = ('.mp4', '.mov', '.webm')  # Aggiungi altri formati se necessario
 
 TARGET_TIME = datetime(2025, 1, 1, 0, 0, 0)
