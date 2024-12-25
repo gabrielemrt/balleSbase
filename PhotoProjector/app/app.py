@@ -15,7 +15,7 @@ IMAGE_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.gif', '.dng')
 VIDEO_EXTENSIONS = ('.mp4', '.mov', '.webm')  # Aggiungi altri formati se necessario
 
 TARGET_TIME = datetime(2025, 1, 1, 0, 0, 0)
-COUNTDOWN_THRESHOLD = 60  # 60 secondi prima dell'evento
+COUNTDOWN_THRESHOLD = 120  # 60 secondi prima dell'evento
 
 known_files = set()  # Per tracciare i file già visti
 media_queue = []      # Coda di media (lista di tuple (filename, mtime))
