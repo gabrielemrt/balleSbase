@@ -14,7 +14,7 @@ IMAGE_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.gif')
 VIDEO_EXTENSIONS = ('.mp4', '.mov', '.webm')
 
 
-TARGET_TIME = datetime(2024, 12, 26, 22, 55, 0)
+TARGET_TIME = datetime(2025, 1, 1, 0, 0, 0)
 # Countdown di 120 secondi (2 minuti), solo come esempio
 COUNTDOWN_THRESHOLD = 120
 
