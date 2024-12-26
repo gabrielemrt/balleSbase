@@ -95,6 +95,7 @@ def show_media():
         # TARGET_TIME superato: mostra il logo (o contenuto a tua scelta)
         media_tag = f'<img src="/current_media" alt="Current Media">'
 
+    debug_info = f"<p>DEBUG: seconds_to_target = {int(seconds_to_target)}</p>"
     html_content = f'''
     <html>
       <head>
@@ -125,6 +126,7 @@ def show_media():
         </style>
       </head>
       <body>
+        {debug_info}
         {media_tag}
       </body>
     </html>
