@@ -17,7 +17,7 @@ VIDEO_EXTENSIONS = ('.mp4', '.mov', '.webm')  # Aggiungi altri formati se necess
 TARGET_TIME = datetime(2024, 12, 26, 16, 5, 0)
 COUNTDOWN_THRESHOLD = 120  # 60 secondi prima dell'evento
 
-known_files = set()  # Per tracciare i file già visti
+known_files = set()   # Per tracciare i file già visti
 media_queue = []      # Coda di media (lista di tuple (filename, mtime))
 current_media = None
 current_media_start = 0.0
@@ -47,7 +47,7 @@ def get_current_media():
 
     # Se non abbiamo un media attuale o è scaduto il suo tempo
     if current_media is None or (now - current_media_start) > DISPLAY_DURATION:
-        # Passa al prossimo in coda se c'è
+        # Passa al prossimo in coda se presente
         if media_queue:
             current_media, _ = media_queue.pop(0)
             current_media_start = now
@@ -64,43 +64,42 @@ def show_media():
     # Calcola quanti secondi mancano al TARGET_TIME
     seconds_to_target = (TARGET_TIME - now).total_seconds()
 
-    # Determiniamo l'intervallo di refresh in base allo stato
+    # Determiniamo l'intervallo di refresh
     if seconds_to_target > COUNTDOWN_THRESHOLD:
-        # Prima dell'ultimo minuto: refresh standard
+        # Prima dei 2 minuti finali
         refresh_interval = AUTO_REFRESH_INTERVAL
     elif 0 <= seconds_to_target <= COUNTDOWN_THRESHOLD:
-        # Durante il countdown: refresh ogni secondo
+        # Durante i 2 minuti finali (countdown), ricarichiamo ogni secondo
         refresh_interval = 1
     else:
-        # Dopo il target: refresh standard (o potresti lasciarlo invariato)
+        # Oltre l'orario target
         refresh_interval = AUTO_REFRESH_INTERVAL
 
     if seconds_to_target > COUNTDOWN_THRESHOLD:
-        # Siamo prima del minuto finale: mostra i media
+        # Mancano più di 2 minuti all’evento: mostra i media
         update_media_list()
         media = get_current_media()
         if media is not None:
-            # Controlla se è video o immagine
             if is_video(media):
                 media_tag = f'<video src="/current_media" autoplay muted loop></video>'
             else:
                 media_tag = f'<img src="/current_media" alt="Current Media">'
         else:
-            # Nessun media: mostra il logo
+            # Nessun media in coda: mostra il logo
             media_tag = f'<img src="/current_media" alt="Current Media">'
     elif 0 <= seconds_to_target <= COUNTDOWN_THRESHOLD:
-        # Siamo nell'ultimo minuto: mostra il countdown
+        # Siamo nei 2 minuti finali: mostra il countdown
         sec_remaining = int(seconds_to_target)
         media_tag = f'<h1 style="font-size:10vw; color:#fff;">{sec_remaining}</h1>'
     else:
-        # TARGET_TIME superato: mostra il logo o altro contenuto
+        # TARGET_TIME superato: mostra il logo (o contenuto a tua scelta)
         media_tag = f'<img src="/current_media" alt="Current Media">'
 
     html_content = f'''
     <html>
       <head>
         <meta http-equiv="refresh" content="{refresh_interval}">
-        <title>Photo/Video Projector Countdown</title>
+        <title>Countdown Demo</title>
         <style>
           body {{
             background-color: #000;
@@ -138,15 +137,15 @@ def current_media_file():
     now = datetime.now()
     seconds_to_target = (TARGET_TIME - now).total_seconds()
 
-    # Se siamo nell'ultimo minuto o dopo, mostra il logo
     if seconds_to_target <= COUNTDOWN_THRESHOLD:
+        # Durante il countdown (o dopo), mostriamo il logo
         return send_file(LOGO_FILE)
-
-    # Altrimenti, mostra il media attuale o logo se non c'è
-    if current_media is not None:
-        return send_file(os.path.join(PHOTOS_DIR, current_media))
     else:
-        return send_file(LOGO_FILE)
+        # Altrimenti, mostriamo il media attuale (o il logo se non c'è)
+        if current_media is not None:
+            return send_file(os.path.join(PHOTOS_DIR, current_media))
+        else:
+            return send_file(LOGO_FILE)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8091)
