@@ -287,9 +287,8 @@ function App() {
                         <div>
                           <h2 className="text-xl font-bold text-orange-700 mb-2">Dove</h2>
                           <p className="text-gray-700">
-                            Agriturismo "Il Giardino del Sole"<br />
-                            Via dei Ciliegi, 123<br />
-                            Borgo Fiorito (FI)
+                            Località a sorpresa, immersa nel nostro<br />
+                            magnifico territorio del Veneto
                           </p>
                         </div>
                       </div>
@@ -312,8 +311,8 @@ function App() {
                           <div className="flex flex-col items-center text-center">
                             <Heart className="w-6 h-6 text-pink-400 mb-2" />
                             <div>
-                              <h3 className="font-semibold text-gray-800">Laboratori Creativi</h3>
-                              <p className="text-gray-600">Attività divertenti per bambini di tutte le età</p>
+                              <h3 className="font-semibold text-gray-800">Angoli dell'amore</h3>
+                              <p className="text-gray-600">Per voi piccioncini sarà possibile avere la vostra privacy con dei fantastici locali privati</p>
                             </div>
                           </div>
                           <div className="flex flex-col items-center text-center">
