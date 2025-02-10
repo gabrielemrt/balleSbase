@@ -4,14 +4,9 @@ services:
     image: node:18-alpine
     container_name: bolt_app
     working_dir: /app
-    
-    # Monta la directory ./project in /app del container
     volumes:
       - ./project:/app
-
-    # Installa le dipendenze e avvia il server in modalità dev
-    command: sh -c "npm install && npm run dev"
-
-    # Esempio: se l'app gira sulla porta 3000
+    # Passiamo l'argomento --host 0.0.0.0 a Vite così sia accessibile fuori dal container
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
     ports:
-      - "8090:8090"
+      - "8090:5173"  # Dal tuo host:8090 --> Container:5173
