@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carica Foto - Capodanno 2026</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Capodanno 2026 🎊</h1>
+            <p>Condividi i tuoi momenti speciali!</p>
+        </div>
+
+        <div class="upload-zone" id="uploadZone">
+            <div class="upload-icon">📸</div>
+            <p class="upload-text">Tocca per scattare o caricare una foto</p>
+            <input type="file" id="fileInput" accept="image/*" capture="environment">
+        </div>
+
+        <div id="preview" class="preview hidden">
+            <img id="previewImage" alt="Anteprima">
+            <div class="preview-actions">
+                <button id="cancelBtn" class="btn btn-secondary">Annulla</button>
+                <button id="uploadBtn" class="btn btn-primary">Carica Foto</button>
+            </div>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Caricamento in corso...</p>
+        </div>
+
+        <div id="success" class="message success hidden">
+            <div class="message-icon">✅</div>
+            <p>Foto caricata con successo!</p>
+            <p class="message-sub">Apparirà presto sul maxischermo</p>
+        </div>
+
+        <div id="error" class="message error hidden">
+            <div class="message-icon">❌</div>
+            <p id="errorText">Errore nel caricamento</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

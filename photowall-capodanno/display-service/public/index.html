@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Display - Capodanno 2026</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Photo Display Mode -->
+    <div id="photoDisplay" class="photo-display">
+        <div class="watermark watermark-top">
+            <img src="/uploads/logo.png" alt="Logo" class="logo">
+            <span class="event-name">CAPODANNO 2026</span>
+        </div>
+
+        <div id="photoContainer" class="photo-container">
+            <img id="currentPhoto" class="current-photo" alt="Photo">
+        </div>
+
+        <div class="watermark watermark-bottom">
+            <span class="event-name">CAPODANNO 2026</span>
+            <img src="/uploads/logo.png" alt="Logo" class="logo">
+        </div>
+    </div>
+
+    <!-- Logo Screen Mode -->
+    <div id="logoScreen" class="logo-screen">
+        <div class="logo-content">
+            <img src="/uploads/logo.png" alt="Logo Festa" class="main-logo">
+            <h1>CAPODANNO 2026</h1>
+            <div class="qr-section">
+                <img src="/uploads/qr-code.png" alt="QR Code" class="qr-code">
+                <p>Scansiona il QR code per caricare le tue foto!</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
