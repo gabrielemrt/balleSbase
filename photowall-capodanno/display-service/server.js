@@ -1,98 +1,193 @@
-const express = require('express');
-const WebSocket = require('ws');
-const path = require('path');
-const fs = require('fs').promises;
+const PHOTO_DISPLAY_TIME = 8000; // 8 secondi
+const photoDisplay = document.getElementById('photoDisplay');
+const logoScreen = document.getElementById('logoScreen');
+const currentPhoto = document.getElementById('currentPhoto');
 
-const app = express();
-const PORT = process.env.PORT || 3002;
-const UPLOAD_DIR = '/app/uploads';
-const IMG_DIR = '/app/img';
+let photoQueue = [];
+let isDisplaying = false;
+let displayedPhotos = new Set();
+let ws = null;
 
-// Serve static files from public
-app.use(express.static('public'));
-app.use('/uploads', express.static(UPLOAD_DIR));
-app.use('/img', express.static(IMG_DIR));
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'display' });
-});
-
-// Display page - serve index.html for /display route
-app.get('/display', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Get all photos
-app.get('/api/photos', async (req, res) => {
-  try {
-    const files = await fs.readdir(UPLOAD_DIR);
-    const photos = [];
-
-    for (const file of files) {
-      if (file.endsWith('.json')) {
-        const data = await fs.readFile(path.join(UPLOAD_DIR, file), 'utf8');
-        photos.push(JSON.parse(data));
-      }
-    }
-
-    photos.sort((a, b) => a.uploadTime - b.uploadTime);
-    res.json(photos);
-
-  } catch (error) {
-    console.error('Errore nel recupero foto:', error);
-    res.status(500).json({ error: 'Errore nel recupero delle foto' });
-  }
-});
-
-// Mark photo as displayed
-app.post('/api/photos/:filename/displayed', async (req, res) => {
-  try {
-    const metadataPath = path.join(UPLOAD_DIR, req.params.filename + '.json');
-    const data = JSON.parse(await fs.readFile(metadataPath, 'utf8'));
-    data.displayed = true;
-    await fs.writeFile(metadataPath, JSON.stringify(data));
+// Connessione WebSocket
+function connectWebSocket() {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsHost = window.location.host;
+    ws = new WebSocket(`${protocol}//${wsHost}/ws`);
     
-    // Notify all WebSocket clients
-    notifyClients({ type: 'photo_displayed', filename: req.params.filename });
+    ws.onopen = () => {
+        console.log('WebSocket connesso');
+        loadInitialPhotos();
+    };
     
-    res.json({ success: true });
-  } catch (error) {
-    console.error('Errore aggiornamento:', error);
-    res.status(500).json({ error: 'Errore aggiornamento' });
-  }
-});
-
-const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Display service in esecuzione sulla porta ${PORT}`);
-});
-
-// WebSocket server
-const wss = new WebSocket.Server({ server, path: '/ws' });
-
-wss.on('connection', (ws) => {
-  console.log('Client display connesso');
-  
-  ws.on('close', () => {
-    console.log('Client display disconnesso');
-  });
-  
-  ws.on('error', (error) => {
-    console.error('WebSocket error:', error);
-  });
-});
-
-function notifyClients(data) {
-  wss.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify(data));
-    }
-  });
+    ws.onmessage = (event) => {
+        try {
+            const data = JSON.parse(event.data);
+            console.log('Messaggio ricevuto:', data);
+            
+            if (data.type === 'new_photo') {
+                addToQueue(data.data);
+            }
+        } catch (error) {
+            console.error('Errore parsing messaggio:', error);
+        }
+    };
+    
+    ws.onclose = () => {
+        console.log('WebSocket disconnesso, riconnessione in 3s...');
+        setTimeout(connectWebSocket, 3000);
+    };
+    
+    ws.onerror = (error) => {
+        console.error('Errore WebSocket:', error);
+    };
 }
 
-// Cleanup on exit
-process.on('SIGTERM', () => {
-  server.close(() => {
-    console.log('Server terminato');
-  });
-});
+// Carica foto iniziali
+async function loadInitialPhotos() {
+    try {
+        const response = await fetch('/api/photos');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const photos = await response.json();
+        console.log(`Caricate ${photos.length} foto`);
+        
+        // Separa foto visualizzate da quelle nuove
+        const notDisplayed = photos.filter(p => !p.displayed);
+        const alreadyDisplayed = photos.filter(p => p.displayed);
+        
+        // Aggiungi prima quelle non visualizzate
+        notDisplayed.forEach(photo => addToQueue(photo));
+        
+        // Segna le foto già mostrate
+        alreadyDisplayed.forEach(photo => {
+            displayedPhotos.add(photo.filename);
+        });
+        
+        // Avvia il display
+        if (photoQueue.length > 0) {
+            displayNextPhoto();
+        } else {
+            showLogoScreen();
+        }
+    } catch (error) {
+        console.error('Errore nel caricamento foto:', error);
+        showLogoScreen();
+    }
+}
+
+// Aggiungi foto alla coda
+function addToQueue(photo) {
+    if (!displayedPhotos.has(photo.filename) && 
+        !photoQueue.find(p => p.filename === photo.filename)) {
+        console.log('Aggiunta alla coda:', photo.filename);
+        photoQueue.push(photo);
+        
+        if (!isDisplaying) {
+            displayNextPhoto();
+        }
+    }
+}
+
+// Mostra prossima foto
+async function displayNextPhoto() {
+    if (photoQueue.length === 0) {
+        console.log('Coda vuota, mostro logo screen');
+        showLogoScreen();
+        return;
+    }
+    
+    isDisplaying = true;
+    const photo = photoQueue.shift();
+    
+    console.log(`Mostro foto: ${photo.filename}`);
+    
+    // Mostra la foto
+    currentPhoto.src = `/uploads/${photo.filename}`;
+    logoScreen.classList.add('hidden');
+    photoDisplay.classList.add('active');
+    
+    // Segna come visualizzata
+    displayedPhotos.add(photo.filename);
+    
+    try {
+        const response = await fetch(`/api/photos/${photo.filename}/displayed`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            console.error('Errore nel marcare foto come visualizzata');
+        }
+    } catch (error) {
+        console.error('Errore aggiornamento stato:', error);
+    }
+    
+    // Attendi e mostra la prossima
+    setTimeout(() => {
+        if (photoQueue.length > 0) {
+            displayNextPhoto();
+        } else {
+            isDisplaying = false;
+            showLogoScreen();
+        }
+    }, PHOTO_DISPLAY_TIME);
+}
+
+// Mostra schermata logo
+function showLogoScreen() {
+    console.log('Mostro logo screen');
+    photoDisplay.classList.remove('active');
+    logoScreen.classList.remove('hidden');
+    isDisplaying = false;
+}
+
+// Gestione errori caricamento immagini
+currentPhoto.onerror = () => {
+    console.error('Errore nel caricamento immagine');
+    if (photoQueue.length > 0) {
+        displayNextPhoto();
+    } else {
+        showLogoScreen();
+    }
+};
+
+// Preload dell'immagine
+currentPhoto.onload = () => {
+    console.log('Immagine caricata con successo');
+};
+
+// Avvia connessione
+connectWebSocket();
+
+// Check periodico per nuove foto (backup se WebSocket fallisce)
+setInterval(async () => {
+    if (!isDisplaying && photoQueue.length === 0) {
+        try {
+            const response = await fetch('/api/photos');
+            const photos = await response.json();
+            const newPhotos = photos.filter(p => !displayedPhotos.has(p.filename));
+            
+            if (newPhotos.length > 0) {
+                console.log(`Trovate ${newPhotos.length} nuove foto via polling`);
+                newPhotos.forEach(photo => addToQueue(photo));
+            }
+        } catch (error) {
+            console.error('Errore controllo nuove foto:', error);
+        }
+    }
+}, 10000); // Ogni 10 secondi
+
+// Log dello stato ogni minuto
+setInterval(() => {
+    console.log('Stato corrente:', {
+        isDisplaying,
+        queueLength: photoQueue.length,
+        displayedCount: displayedPhotos.size,
+        wsConnected: ws && ws.readyState === WebSocket.OPEN
+    });
+}, 60000);
