@@ -11,40 +11,43 @@ let ws = null;
 // Connessione WebSocket
 function connectWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsHost = window.location.host;
-    ws = new WebSocket(`${protocol}//${wsHost}/ws`);
+    const wsUrl = `${protocol}//${window.location.host}/ws`;
+    
+    console.log('Connessione WebSocket a:', wsUrl);
+    ws = new WebSocket(wsUrl);
     
     ws.onopen = () => {
-        console.log('WebSocket connesso');
+        console.log('✅ WebSocket connesso');
         loadInitialPhotos();
     };
     
     ws.onmessage = (event) => {
         try {
             const data = JSON.parse(event.data);
-            console.log('Messaggio ricevuto:', data);
+            console.log('📩 Messaggio ricevuto:', data);
             
             if (data.type === 'new_photo') {
                 addToQueue(data.data);
             }
         } catch (error) {
-            console.error('Errore parsing messaggio:', error);
+            console.error('❌ Errore parsing messaggio:', error);
         }
     };
     
     ws.onclose = () => {
-        console.log('WebSocket disconnesso, riconnessione in 3s...');
+        console.log('⚠️ WebSocket disconnesso, riconnessione in 3s...');
         setTimeout(connectWebSocket, 3000);
     };
     
     ws.onerror = (error) => {
-        console.error('Errore WebSocket:', error);
+        console.error('❌ Errore WebSocket:', error);
     };
 }
 
 // Carica foto iniziali
 async function loadInitialPhotos() {
     try {
+        console.log('📸 Caricamento foto iniziali...');
         const response = await fetch('/api/photos');
         
         if (!response.ok) {
@@ -52,11 +55,13 @@ async function loadInitialPhotos() {
         }
         
         const photos = await response.json();
-        console.log(`Caricate ${photos.length} foto`);
+        console.log(`✅ Caricate ${photos.length} foto totali`);
         
         // Separa foto visualizzate da quelle nuove
         const notDisplayed = photos.filter(p => !p.displayed);
         const alreadyDisplayed = photos.filter(p => p.displayed);
+        
+        console.log(`📋 Non visualizzate: ${notDisplayed.length}, Già visualizzate: ${alreadyDisplayed.length}`);
         
         // Aggiungi prima quelle non visualizzate
         notDisplayed.forEach(photo => addToQueue(photo));
@@ -73,7 +78,7 @@ async function loadInitialPhotos() {
             showLogoScreen();
         }
     } catch (error) {
-        console.error('Errore nel caricamento foto:', error);
+        console.error('❌ Errore nel caricamento foto:', error);
         showLogoScreen();
     }
 }
@@ -82,7 +87,7 @@ async function loadInitialPhotos() {
 function addToQueue(photo) {
     if (!displayedPhotos.has(photo.filename) && 
         !photoQueue.find(p => p.filename === photo.filename)) {
-        console.log('Aggiunta alla coda:', photo.filename);
+        console.log('➕ Aggiunta alla coda:', photo.filename);
         photoQueue.push(photo);
         
         if (!isDisplaying) {
@@ -94,7 +99,7 @@ function addToQueue(photo) {
 // Mostra prossima foto
 async function displayNextPhoto() {
     if (photoQueue.length === 0) {
-        console.log('Coda vuota, mostro logo screen');
+        console.log('📺 Coda vuota, mostro logo screen');
         showLogoScreen();
         return;
     }
@@ -102,7 +107,7 @@ async function displayNextPhoto() {
     isDisplaying = true;
     const photo = photoQueue.shift();
     
-    console.log(`Mostro foto: ${photo.filename}`);
+    console.log(`🖼️ Mostro foto: ${photo.filename} (${photoQueue.length} in coda)`);
     
     // Mostra la foto
     currentPhoto.src = `/uploads/${photo.filename}`;
@@ -121,10 +126,12 @@ async function displayNextPhoto() {
         });
         
         if (!response.ok) {
-            console.error('Errore nel marcare foto come visualizzata');
+            console.error('❌ Errore nel marcare foto come visualizzata');
+        } else {
+            console.log('✅ Foto marcata come visualizzata');
         }
     } catch (error) {
-        console.error('Errore aggiornamento stato:', error);
+        console.error('❌ Errore aggiornamento stato:', error);
     }
     
     // Attendi e mostra la prossima
@@ -140,7 +147,7 @@ async function displayNextPhoto() {
 
 // Mostra schermata logo
 function showLogoScreen() {
-    console.log('Mostro logo screen');
+    console.log('🎨 Mostro logo screen');
     photoDisplay.classList.remove('active');
     logoScreen.classList.remove('hidden');
     isDisplaying = false;
@@ -148,7 +155,7 @@ function showLogoScreen() {
 
 // Gestione errori caricamento immagini
 currentPhoto.onerror = () => {
-    console.error('Errore nel caricamento immagine');
+    console.error('❌ Errore nel caricamento immagine');
     if (photoQueue.length > 0) {
         displayNextPhoto();
     } else {
@@ -158,8 +165,13 @@ currentPhoto.onerror = () => {
 
 // Preload dell'immagine
 currentPhoto.onload = () => {
-    console.log('Immagine caricata con successo');
+    console.log('✅ Immagine caricata con successo');
 };
+
+// Log iniziale
+console.log('🚀 Display service avviato');
+console.log('📍 Host:', window.location.host);
+console.log('🔗 Protocol:', window.location.protocol);
 
 // Avvia connessione
 connectWebSocket();
@@ -173,18 +185,18 @@ setInterval(async () => {
             const newPhotos = photos.filter(p => !displayedPhotos.has(p.filename));
             
             if (newPhotos.length > 0) {
-                console.log(`Trovate ${newPhotos.length} nuove foto via polling`);
+                console.log(`🔄 Trovate ${newPhotos.length} nuove foto via polling`);
                 newPhotos.forEach(photo => addToQueue(photo));
             }
         } catch (error) {
-            console.error('Errore controllo nuove foto:', error);
+            console.error('❌ Errore controllo nuove foto:', error);
         }
     }
 }, 10000); // Ogni 10 secondi
 
 // Log dello stato ogni minuto
 setInterval(() => {
-    console.log('Stato corrente:', {
+    console.log('📊 Stato corrente:', {
         isDisplaying,
         queueLength: photoQueue.length,
         displayedCount: displayedPhotos.size,
