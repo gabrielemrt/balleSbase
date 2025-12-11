@@ -11,18 +11,19 @@ let ws = null;
 // Connessione WebSocket
 function connectWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    ws = new WebSocket(`${protocol}//${window.location.host}/ws`);
-
+    const wsHost = window.location.host;
+    ws = new WebSocket(`${protocol}//${wsHost}/ws`);
+    
     ws.onopen = () => {
         console.log('WebSocket connesso');
         loadInitialPhotos();
     };
-
+    
     ws.onmessage = (event) => {
         try {
             const data = JSON.parse(event.data);
             console.log('Messaggio ricevuto:', data);
-
+            
             if (data.type === 'new_photo') {
                 addToQueue(data.data);
             }
@@ -30,12 +31,12 @@ function connectWebSocket() {
             console.error('Errore parsing messaggio:', error);
         }
     };
-
+    
     ws.onclose = () => {
         console.log('WebSocket disconnesso, riconnessione in 3s...');
         setTimeout(connectWebSocket, 3000);
     };
-
+    
     ws.onerror = (error) => {
         console.error('Errore WebSocket:', error);
     };
@@ -45,26 +46,26 @@ function connectWebSocket() {
 async function loadInitialPhotos() {
     try {
         const response = await fetch('/api/photos');
-
+        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-
+        
         const photos = await response.json();
         console.log(`Caricate ${photos.length} foto`);
-
+        
         // Separa foto visualizzate da quelle nuove
         const notDisplayed = photos.filter(p => !p.displayed);
         const alreadyDisplayed = photos.filter(p => p.displayed);
-
+        
         // Aggiungi prima quelle non visualizzate
         notDisplayed.forEach(photo => addToQueue(photo));
-
+        
         // Segna le foto già mostrate
         alreadyDisplayed.forEach(photo => {
             displayedPhotos.add(photo.filename);
         });
-
+        
         // Avvia il display
         if (photoQueue.length > 0) {
             displayNextPhoto();
@@ -79,11 +80,11 @@ async function loadInitialPhotos() {
 
 // Aggiungi foto alla coda
 function addToQueue(photo) {
-    if (!displayedPhotos.has(photo.filename) &&
+    if (!displayedPhotos.has(photo.filename) && 
         !photoQueue.find(p => p.filename === photo.filename)) {
         console.log('Aggiunta alla coda:', photo.filename);
         photoQueue.push(photo);
-
+        
         if (!isDisplaying) {
             displayNextPhoto();
         }
@@ -97,20 +98,20 @@ async function displayNextPhoto() {
         showLogoScreen();
         return;
     }
-
+    
     isDisplaying = true;
     const photo = photoQueue.shift();
-
+    
     console.log(`Mostro foto: ${photo.filename}`);
-
+    
     // Mostra la foto
     currentPhoto.src = `/uploads/${photo.filename}`;
     logoScreen.classList.add('hidden');
     photoDisplay.classList.add('active');
-
+    
     // Segna come visualizzata
     displayedPhotos.add(photo.filename);
-
+    
     try {
         const response = await fetch(`/api/photos/${photo.filename}/displayed`, {
             method: 'POST',
@@ -118,14 +119,14 @@ async function displayNextPhoto() {
                 'Content-Type': 'application/json'
             }
         });
-
+        
         if (!response.ok) {
             console.error('Errore nel marcare foto come visualizzata');
         }
     } catch (error) {
         console.error('Errore aggiornamento stato:', error);
     }
-
+    
     // Attendi e mostra la prossima
     setTimeout(() => {
         if (photoQueue.length > 0) {
@@ -170,7 +171,7 @@ setInterval(async () => {
             const response = await fetch('/api/photos');
             const photos = await response.json();
             const newPhotos = photos.filter(p => !displayedPhotos.has(p.filename));
-
+            
             if (newPhotos.length > 0) {
                 console.log(`Trovate ${newPhotos.length} nuove foto via polling`);
                 newPhotos.forEach(photo => addToQueue(photo));
