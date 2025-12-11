@@ -33,7 +33,7 @@ services:
       - PORT=3002
       - PHOTO_DISPLAY_TIME=${PHOTO_DISPLAY_TIME:-8000}
     volumes:
-      - ./shared/uploads:/app/uploads:ro
+      - ./shared/uploads:/app/uploads
       - ./shared/img:/app/img:ro
     restart: unless-stopped
     networks:
